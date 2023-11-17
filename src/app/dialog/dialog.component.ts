@@ -1,4 +1,4 @@
-import { Component, ComponentRef, Directive, EventEmitter, Input, Output, TemplateRef , inject} from '@angular/core';
+import { Component, ComponentRef, Directive, EventEmitter, Input, Output, TemplateRef, inject } from '@angular/core';
 
 @Directive({
   selector: 'ng-template[dialogTemplate]',
@@ -26,19 +26,19 @@ interface DialogContext {
 })
 export class DialogComponent {
 
-  protected dialogContext: DialogContext = { close: this.close.bind(this), submit: this.submit.bind(this) };
+  public readonly dialogContext: DialogContext = { close: this.close.bind(this), submit: this.submit.bind(this) };
 
   @Input() headerText!: string;
   @Input() contentTemplate!: TemplateRef<any>;
   @Input() dialogComponentRef!: ComponentRef<DialogComponent>;
   @Output() submitEvent = new EventEmitter();
 
-  protected submit($event: any): void {
+  public submit($event: any): void {
     this.submitEvent.emit($event);
     this.close();
   }
 
-  protected close(): void {
+  public close(): void {
     this.submitEvent.complete();
     this.dialogComponentRef.destroy();
   }

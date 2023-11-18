@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 
+/* A dummy component used just to show that it can be added to Dialog component */
+
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html'

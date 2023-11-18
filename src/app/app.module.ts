@@ -12,4 +12,4 @@ import { FormsModule } from '@angular/forms';
   providers: [DialogService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

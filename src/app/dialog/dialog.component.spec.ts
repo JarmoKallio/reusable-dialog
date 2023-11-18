@@ -1,18 +1,20 @@
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { DialogComponent, DialogTemplate } from './dialog.component';
 
 describe('DialogComponent', () => {
   let component: DialogComponent;
   let fixture: ComponentFixture<DialogComponent>;
   let templateWrapperFixture: ComponentFixture<TemplateWrapperComponent>;
+  let contentTemplate: TemplateRef<any>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TemplateWrapperComponent, DialogTemplate]
     }).compileComponents();
     fixture = TestBed.createComponent(DialogComponent);
+    templateWrapperFixture = TestBed.createComponent(TemplateWrapperComponent);
+    contentTemplate = templateWrapperFixture.componentInstance.dialogTemplate.templateRef;
     component = fixture.componentInstance;
   });
 
@@ -24,12 +26,12 @@ describe('DialogComponent', () => {
     const headerText: string = "header text";
     component.headerText = headerText;
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h3')?.textContent).toContain(headerText);
+    const compiled = fixture.debugElement.nativeElement as HTMLElement;
+    expect(compiled.querySelector('#dialogHeader')?.textContent).toContain(headerText);
   });
 
   it('should render close button', () => {
-    const compiled = fixture.nativeElement as HTMLElement;
+    const compiled = fixture.debugElement.nativeElement as HTMLElement;
     expect(compiled.querySelector('button')).toBeTruthy();
   });
 
@@ -42,19 +44,17 @@ describe('DialogComponent', () => {
   }));
 
   it('should render contentTemplate', () => {
-    templateWrapperFixture = TestBed.createComponent(TemplateWrapperComponent);
-    component.contentTemplate = templateWrapperFixture.componentInstance.dialogTemplate.templateRef;
+    component.contentTemplate = contentTemplate;
     fixture.detectChanges();
-    const compiled: DebugElement = fixture.debugElement;
-    expect(compiled.query(By.css('#buttonClose'))).toBeTruthy();
-    expect(compiled.query(By.css('#buttonSubmit'))).toBeTruthy();
+    const element: DebugElement = fixture.debugElement;
+    expect(element.nativeElement.querySelector('#buttonClose')).toBeTruthy();
+    expect(element.nativeElement.querySelector('#buttonSubmit')).toBeTruthy();
   });
 
   it('Should be destroyed when clicking a button bound to its close method', fakeAsync(() => {
     let dialogComponentRef = fixture.componentRef;
-    templateWrapperFixture = TestBed.createComponent(TemplateWrapperComponent);
-    component.contentTemplate = templateWrapperFixture.componentInstance.dialogTemplate.templateRef;
     component.dialogComponentRef = dialogComponentRef;
+    component.contentTemplate = contentTemplate;
     fixture.detectChanges();
     spyOn(dialogComponentRef, 'destroy');
     const button = fixture.debugElement.nativeElement.querySelector('#buttonClose');
@@ -65,9 +65,8 @@ describe('DialogComponent', () => {
 
   it('Should be destroyed when clicking a button bound to its submit method', fakeAsync(() => {
     let dialogComponentRef = fixture.componentRef;
-    templateWrapperFixture = TestBed.createComponent(TemplateWrapperComponent);
-    component.contentTemplate = templateWrapperFixture.componentInstance.dialogTemplate.templateRef;
     component.dialogComponentRef = dialogComponentRef;
+    component.contentTemplate = contentTemplate;
     fixture.detectChanges();
     spyOn(dialogComponentRef, 'destroy');
     const button = fixture.debugElement.nativeElement.querySelector('#buttonSubmit');
@@ -86,5 +85,5 @@ describe('DialogComponent', () => {
   `
 })
 class TemplateWrapperComponent {
-  @ViewChild('dialogWithForm', {static: true}) dialogTemplate!: DialogTemplate;
+  @ViewChild('dialogWithForm', { static: true }) dialogTemplate!: DialogTemplate;
 }

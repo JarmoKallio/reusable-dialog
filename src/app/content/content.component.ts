@@ -2,8 +2,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 
 @Component({
   selector: 'app-content',
-  templateUrl: './content.component.html',
-  styleUrl: './content.component.css'
+  templateUrl: './content.component.html'
 })
 export class ContentComponent implements OnInit, OnDestroy {
   @Output() closeEvent = new EventEmitter<any>();
@@ -11,7 +10,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   submit(value: string) {
     this.closeEvent.emit(value);
   }
-  
+
   close() {
     this.closeEvent.emit();
   }

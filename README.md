@@ -1,27 +1,15 @@
-# ReusableDialog
+# Reusable Dialog Component and Data Transform Function
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.
+Project is generated with Angular version 17.0.0. To try out Dialog component, in `reusable-dialog` -folder run `npm install`, then `npm start` or `ng build` and `ng serve` whick will open dev server. Band data transform is run along with Dialog component tests.
 
-## Development server
+## Reusable Dialog
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Code for Dialog component can be found in `app/dialog` -folder. `DialogService` creates new `DialogComponent` that accepts template reference as input and renders it with ngTemplateOutlet. `DialogTemplate` -directive is used to enforce types of `close` and `submit` -template variables. They should be functions and they are used to destroy the Dialog. Both do destroy the Dialog but submit could also send an event that the caller of `DialogServices` `openDialog` could subscribe to.
 
-## Code scaffolding
+## Band Data Exercise
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The function implemented for Band exercise can be found in `app/data-transform` -folder. Data transform test calls the function DataTransformer.transformData -function in `data.transform.ts` to modify band data, result is then compared to expected data in the test file.
 
-## Build
+## Tests
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Run `ng test` to execute the unit tests via Karma for both Dialog component and data transform function for Band data.
